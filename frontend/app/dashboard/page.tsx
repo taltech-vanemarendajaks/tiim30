@@ -1,32 +1,38 @@
+import { backendUrl } from "@/utils/constants";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-
-const backend =
-  process.env.BACKEND_URL ??
-  process.env.NEXT_PUBLIC_BACKEND_URL ??
-  "http://localhost:8080";
 
 export const dynamic = "force-dynamic";
 
 export default async function Dashboard() {
   const cookieHeader = (await headers()).get("cookie") ?? "";
 
-  const res = await fetch(`${backend}/api/account`, {
+  const res = await fetch(`${backendUrl}/api/account`, {
     headers: { cookie: cookieHeader },
     cache: "no-store",
   });
 
   if (res.status === 401) redirect("/login");
+
   if (!res.ok) {
     const body = await res.text();
-    console.error("Backend /api/account failed:", res.status, body.slice(0, 300));
+    console.error(
+      "Backend /api/account failed:",
+      res.status,
+      body.slice(0, 300)
+    );
     redirect("/login");
   }
 
   const contentType = res.headers.get("content-type") ?? "";
+
   if (!contentType.includes("application/json")) {
     const body = await res.text();
-    console.error("Expected JSON from backend, got:", contentType, body.slice(0, 300));
+    console.error(
+      "Expected JSON from backend, got:",
+      contentType,
+      body.slice(0, 300)
+    );
     redirect("/login");
   }
 
@@ -36,10 +42,13 @@ export default async function Dashboard() {
   let orgName = "Unknown Organization";
   if (me.organizationId) {
     try {
-      const orgRes = await fetch(`${backend}/api/organizations/${me.organizationId}`, {
-        headers: { cookie: cookieHeader },
-        cache: "no-store",
-      });
+      const orgRes = await fetch(
+        `${backendUrl}/api/organizations/${me.organizationId}`,
+        {
+          headers: { cookie: cookieHeader },
+          cache: "no-store",
+        }
+      );
       if (orgRes.ok) {
         const org = await orgRes.json();
         orgName = org.name;
@@ -56,11 +65,22 @@ export default async function Dashboard() {
           <h1 className="text-3xl font-bold text-card-foreground mb-4">
             Welcome, {me.name}!
           </h1>
-          
+
           <div className="space-y-2 text-muted-foreground">
-            <p><span className="font-medium text-card-foreground">Email:</span> {me.email}</p>
-            <p><span className="font-medium text-card-foreground">Organization:</span> {orgName}</p>
-            <p><span className="font-medium text-card-foreground">Role:</span> {me.role || "No role assigned"}</p>
+            <p>
+              <span className="font-medium text-card-foreground">Email:</span>{" "}
+              {me.email}
+            </p>
+            <p>
+              <span className="font-medium text-card-foreground">
+                Organization:
+              </span>{" "}
+              {orgName}
+            </p>
+            <p>
+              <span className="font-medium text-card-foreground">Role:</span>{" "}
+              {me.role || "No role assigned"}
+            </p>
           </div>
         </div>
       </div>
