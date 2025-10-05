@@ -468,3 +468,288 @@ databaseChangeLog:
         - sql:
             dbms: postgresql
             sql: ALTER TABLE inventory_transactions ADD CONSTRAINT chk_inventory_trans_type CHECK (transaction_type IN ('SALE', 'PURCHASE', 'ADJUSTMENT', 'RETURN', 'TRANSFER_IN', 'TRANSFER_OUT', 'INITIAL'));
+
+  - changeSet:
+      id: 010-seed-bar-inventory
+      author: fred
+      changes:
+        # Insert drink categories for TalTech ITÜK
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: organization_id
+                  value: 2
+              - column:
+                  name: name
+                  value: Beer
+              - column:
+                  name: dynamic_pricing
+                  valueBoolean: false
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: organization_id
+                  value: 2
+              - column:
+                  name: name
+                  value: Wine
+              - column:
+                  name: dynamic_pricing
+                  valueBoolean: false
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: organization_id
+                  value: 2
+              - column:
+                  name: name
+                  value: Spirits
+              - column:
+                  name: dynamic_pricing
+                  valueBoolean: false
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: organization_id
+                  value: 2
+              - column:
+                  name: name
+                  value: Cocktails
+              - column:
+                  name: dynamic_pricing
+                  valueBoolean: false
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: organization_id
+                  value: 2
+              - column:
+                  name: name
+                  value: Non-Alcoholic
+              - column:
+                  name: dynamic_pricing
+                  valueBoolean: false
+
+        # Insert beer products (using SQL to find category by name)
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Pilsner Draft', 'Classic pilsner beer on tap', 4.50
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Beer';
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'IPA', 'Hoppy India Pale Ale', 5.20
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Beer';
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Wheat Beer', 'Light and refreshing wheat beer', 4.80
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Beer';
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Stout', 'Rich and creamy dark stout', 5.50
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Beer';
+
+        # Insert wine products
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'House Red Wine', 'Smooth house red wine by the glass', 6.00
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Wine';
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'House White Wine', 'Crisp house white wine by the glass', 6.00
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Wine';
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Prosecco', 'Italian sparkling wine', 7.50
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Wine';
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Premium Cabernet', 'Premium Cabernet Sauvignon', 9.50
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Wine';
+
+        # Insert spirits products
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Vodka Shot', 'Premium vodka shot', 3.50
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Spirits';
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Whiskey', 'Single malt whiskey', 8.00
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Spirits';
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Gin', 'Premium London dry gin', 6.50
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Spirits';
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Rum', 'Caribbean white rum', 6.00
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Spirits';
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Tequila', '100% agave tequila', 7.00
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Spirits';
+
+        # Insert cocktail products
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Mojito', 'Classic Cuban cocktail with mint and lime', 8.50
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Cocktails';
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Old Fashioned', 'Whiskey cocktail with bitters and orange', 10.00
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Cocktails';
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Margarita', 'Tequila cocktail with lime and triple sec', 9.00
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Cocktails';
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Gin & Tonic', 'Classic gin and tonic with lime', 7.50
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Cocktails';
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Moscow Mule', 'Vodka with ginger beer and lime', 8.00
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Cocktails';
+
+        # Insert non-alcoholic products
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Coca-Cola', 'Classic cola soft drink', 3.00
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Non-Alcoholic';
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Orange Juice', 'Fresh orange juice', 3.50
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Non-Alcoholic';
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Sparkling Water', 'Premium sparkling mineral water', 2.50
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Non-Alcoholic';
+        - sql:
+            sql: >
+              INSERT INTO products (organization_id, category_id, name, description, base_price)
+              SELECT 2, c.id, 'Coffee', 'Freshly brewed coffee', 3.00
+              FROM categories c WHERE c.organization_id = 2 AND c.name = 'Non-Alcoholic';
+
+        # Insert inventory records for all products (using SQL to find product by name)
+        # Beer inventory
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 150 FROM products p WHERE p.organization_id = 2 AND p.name = 'Pilsner Draft';
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 120 FROM products p WHERE p.organization_id = 2 AND p.name = 'IPA';
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 100 FROM products p WHERE p.organization_id = 2 AND p.name = 'Wheat Beer';
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 80 FROM products p WHERE p.organization_id = 2 AND p.name = 'Stout';
+
+        # Wine inventory
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 200 FROM products p WHERE p.organization_id = 2 AND p.name = 'House Red Wine';
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 200 FROM products p WHERE p.organization_id = 2 AND p.name = 'House White Wine';
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 50 FROM products p WHERE p.organization_id = 2 AND p.name = 'Prosecco';
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 30 FROM products p WHERE p.organization_id = 2 AND p.name = 'Premium Cabernet';
+
+        # Spirits inventory
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 500 FROM products p WHERE p.organization_id = 2 AND p.name = 'Vodka Shot';
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 75 FROM products p WHERE p.organization_id = 2 AND p.name = 'Whiskey';
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 100 FROM products p WHERE p.organization_id = 2 AND p.name = 'Gin';
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 90 FROM products p WHERE p.organization_id = 2 AND p.name = 'Rum';
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 85 FROM products p WHERE p.organization_id = 2 AND p.name = 'Tequila';
+
+        # Cocktail inventory
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 60 FROM products p WHERE p.organization_id = 2 AND p.name = 'Mojito';
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 40 FROM products p WHERE p.organization_id = 2 AND p.name = 'Old Fashioned';
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 55 FROM products p WHERE p.organization_id = 2 AND p.name = 'Margarita';
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 80 FROM products p WHERE p.organization_id = 2 AND p.name = 'Gin & Tonic';
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 45 FROM products p WHERE p.organization_id = 2 AND p.name = 'Moscow Mule';
+
+        # Non-alcoholic inventory
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 300 FROM products p WHERE p.organization_id = 2 AND p.name = 'Coca-Cola';
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 100 FROM products p WHERE p.organization_id = 2 AND p.name = 'Orange Juice';
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 200 FROM products p WHERE p.organization_id = 2 AND p.name = 'Sparkling Water';
+        - sql:
+            sql: >
+              INSERT INTO inventory (organization_id, product_id, quantity)
+              SELECT 2, p.id, 150 FROM products p WHERE p.organization_id = 2 AND p.name = 'Coffee';
