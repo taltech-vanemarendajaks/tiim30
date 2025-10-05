@@ -25,9 +25,10 @@ public class InventoryController {
 
     @GetMapping
     public List<InventoryResponseDto> getOrganizationInventory(
+            @RequestParam(required = false) Long categoryId,
             @CookieValue(name = "jwt", required = false) String token) {
         User user = authenticateUser(token);
-        return inventoryService.getByOrganization(user.getOrganizationId());
+        return inventoryService.getByOrganization(user.getOrganizationId(), categoryId);
     }
 
     @GetMapping("/product/{productId}")

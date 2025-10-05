@@ -15,6 +15,7 @@ import java.util.UUID;
 public interface InventoryMapper {
 
     @Mapping(target = "productName", ignore = true) // Set in service
+    @Mapping(target = "unitPrice", ignore = true) // Set in service
     @Mapping(target = "updatedAt", source = "updatedAt", dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     InventoryResponseDto toResponse(Inventory inventory);
 

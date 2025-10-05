@@ -1,26 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
+export async function POST(request: NextRequest) {
     try {
         const backendUrl =
             process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8080";
 
-        // Get the categoryId parameter from the request URL
-        const { searchParams } = new URL(request.url);
-        const categoryId = searchParams.get("categoryId");
+        const body = await request.json();
 
-        // Build the backend URL with optional categoryId parameter
-        const url = new URL(`${backendUrl}/api/inventory`);
-        if (categoryId) {
-            url.searchParams.append("categoryId", categoryId);
-        }
-
-        const response = await fetch(url.toString(), {
-            method: "GET",
+        const response = await fetch(`${backendUrl}/api/sales`, {
+            method: "POST",
             headers: {
+                "Content-Type": "application/json",
                 Cookie: request.headers.get("cookie") || "",
             },
             credentials: "include",
+            body: JSON.stringify(body),
         });
 
         if (!response.ok) {
@@ -33,7 +27,7 @@ export async function GET(request: NextRequest) {
     } catch (error) {
         console.error("Proxy error:", error);
         return NextResponse.json(
-            { error: "Failed to fetch inventory" },
+            { error: "Failed to process sale" },
             { status: 500 }
         );
     }

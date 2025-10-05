@@ -30,14 +30,27 @@ public class InventoryService {
 
     @Transactional(readOnly = true)
     public List<InventoryResponseDto> getByOrganization(Long organizationId) {
-        List<Inventory> inventories = inventoryRepository.findByOrganizationId(organizationId);
+        return getByOrganization(organizationId, null);
+    }
+
+    @Transactional(readOnly = true)
+    public List<InventoryResponseDto> getByOrganization(Long organizationId, Long categoryId) {
+        List<Inventory> inventories;
+
+        if (categoryId != null) {
+            inventories = inventoryRepository.findByOrganizationIdAndCategoryId(organizationId, categoryId);
+        } else {
+            inventories = inventoryRepository.findByOrganizationId(organizationId);
+        }
 
         return inventories.stream()
                 .map(inv -> {
                     InventoryResponseDto base = inventoryMapper.toResponse(inv);
-                    String productName = productRepository.findById(inv.getProductId())
-                            .map(Product::getName)
-                            .orElse("Unknown Product");
+                    Product product = productRepository.findById(inv.getProductId())
+                            .orElse(null);
+
+                    String productName = product != null ? product.getName() : "Unknown Product";
+                    BigDecimal unitPrice = product != null ? product.getBasePrice() : BigDecimal.ZERO;
 
                     return new InventoryResponseDto(
                             base.id(),
@@ -45,6 +58,7 @@ public class InventoryService {
                             base.productId(),
                             productName,
                             base.quantity(),
+                            unitPrice,
                             base.updatedAt()
                     );
                 })
@@ -59,9 +73,11 @@ public class InventoryService {
                         HttpStatus.NOT_FOUND, "No inventory found for this product"));
 
         InventoryResponseDto base = inventoryMapper.toResponse(inventory);
-        String productName = productRepository.findById(productId)
-                .map(Product::getName)
-                .orElse("Unknown Product");
+        Product product = productRepository.findById(productId)
+                .orElse(null);
+
+        String productName = product != null ? product.getName() : "Unknown Product";
+        BigDecimal unitPrice = product != null ? product.getBasePrice() : BigDecimal.ZERO;
 
         return new InventoryResponseDto(
                 base.id(),
@@ -69,6 +85,7 @@ public class InventoryService {
                 base.productId(),
                 productName,
                 base.quantity(),
+                unitPrice,
                 base.updatedAt()
         );
     }
@@ -116,6 +133,7 @@ public class InventoryService {
                 base.productId(),
                 product.getName(),
                 base.quantity(),
+                product.getBasePrice(),
                 base.updatedAt()
         );
     }
@@ -151,7 +169,7 @@ public class InventoryService {
         inventory = inventoryRepository.save(inventory);
 
         // Create transaction record (negative quantity change)
-        createTransaction(inventory.getId(), "SALE", request.quantity().negate(),
+        createTransaction(inventory.getId(), "ADJUSTMENT", request.quantity().negate(),
                 oldQuantity, newQuantity, request.referenceId(), request.notes(), userId);
 
         InventoryResponseDto base = inventoryMapper.toResponse(inventory);
@@ -161,6 +179,7 @@ public class InventoryService {
                 base.productId(),
                 product.getName(),
                 base.quantity(),
+                product.getBasePrice(),
                 base.updatedAt()
         );
     }
@@ -200,6 +219,7 @@ public class InventoryService {
                 base.productId(),
                 product.getName(),
                 base.quantity(),
+                product.getBasePrice(),
                 base.updatedAt()
         );
     }
