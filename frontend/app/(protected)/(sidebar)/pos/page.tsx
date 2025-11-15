@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import {
   ShoppingCart,
@@ -9,7 +9,6 @@ import {
   Trash2,
   AlertCircle,
   Store,
-  Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,6 +21,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export const dynamic = "force-dynamic";
 
@@ -81,36 +81,39 @@ export default function POSManagement() {
     return null;
   };
 
-  const fetchStations = async (isAdmin: boolean) => {
-    try {
-      const url = isAdmin
-        ? "/api/backend/bar-stations"
-        : "/api/backend/bar-stations/user";
+  const fetchStations = useCallback(
+    async (isAdmin: boolean) => {
+      try {
+        const url = isAdmin
+          ? "/api/backend/bar-stations"
+          : "/api/backend/bar-stations/user";
 
-      const response = await fetch(url, { cache: "no-store" });
+        const response = await fetch(url, { cache: "no-store" });
 
-      if (!response.ok) {
-        throw new Error("Failed to fetch stations");
+        if (!response.ok) {
+          throw new Error("Failed to fetch stations");
+        }
+
+        const data = await response.json();
+        setStations(data);
+
+        // If non-admin with single station, auto-redirect
+        if (!isAdmin && data.length === 1) {
+          router.push(`/pos/${data[0].id}`);
+          return;
+        }
+
+        setError(null);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Unknown error");
+      } finally {
+        setLoading(false);
       }
+    },
+    [router]
+  );
 
-      const data = await response.json();
-      setStations(data);
-
-      // If non-admin with single station, auto-redirect
-      if (!isAdmin && data.length === 1) {
-        router.push(`/pos/${data[0].id}`);
-        return;
-      }
-
-      setError(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Unknown error");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchAllUsers = async () => {
+  const fetchAllUsers = useCallback(async () => {
     try {
       const response = await fetch("/api/backend/users", { cache: "no-store" });
       if (!response.ok) {
@@ -119,7 +122,6 @@ export default function POSManagement() {
       }
 
       const data = await response.json();
-      console.log("Users fetched:", data);
       setAllUsers(data);
       setUserFetchError(null);
     } catch (err) {
@@ -129,7 +131,7 @@ export default function POSManagement() {
       setAllUsers([]);
       setUserFetchError(message);
     }
-  };
+  }, []);
 
   useEffect(() => {
     const init = async () => {
@@ -145,7 +147,7 @@ export default function POSManagement() {
     };
 
     init();
-  }, []);
+  }, [fetchStations, fetchAllUsers]);
 
   const handleCreateStation = async () => {
     if (!formName.trim()) {
@@ -261,7 +263,7 @@ export default function POSManagement() {
     setFormName(station.name);
     setFormDescription(station.description || "");
     setFormUserIds(
-      station.assignedUsers?.map((u: any) => u.id.toString()) || []
+      station.assignedUsers?.map((u: User) => u.id.toString()) || []
     );
   };
 
@@ -363,6 +365,58 @@ export default function POSManagement() {
                         placeholder="Optional description"
                       />
                     </div>
+                    <div>
+                      <Label>Assign Users</Label>
+                      <div className="mt-2 max-h-48 overflow-y-auto border rounded-md p-3 space-y-2">
+                        {userFetchError ? (
+                          <p className="text-sm text-red-400">
+                            {userFetchError}
+                          </p>
+                        ) : allUsers.length === 0 ? (
+                          <p className="text-sm text-gray-400">
+                            No users available
+                          </p>
+                        ) : (
+                          allUsers.map((user) => {
+                            const isChecked = formUserIds.includes(
+                              user.id.toString()
+                            );
+                            return (
+                              <div
+                                key={user.id}
+                                className="flex items-center gap-2 cursor-pointer hover:bg-gray-700/50 p-2 rounded"
+                              >
+                                <Checkbox
+                                  checked={isChecked}
+                                  onCheckedChange={(checked) => {
+                                    if (checked) {
+                                      setFormUserIds([
+                                        ...formUserIds,
+                                        user.id.toString(),
+                                      ]);
+                                    } else {
+                                      setFormUserIds(
+                                        formUserIds.filter(
+                                          (id) => id !== user.id.toString()
+                                        )
+                                      );
+                                    }
+                                  }}
+                                />
+                                <span className="text-sm text-gray-200">
+                                  {user.name || user.email}
+                                </span>
+                                {user.role && (
+                                  <span className="text-xs text-gray-400">
+                                    ({user.role})
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          })
+                        )}
+                      </div>
+                    </div>
                     <div className="flex gap-2">
                       <Button
                         onClick={handleCreateStation}
@@ -373,7 +427,12 @@ export default function POSManagement() {
                       </Button>
                       <Button
                         variant="outline"
-                        onClick={() => setIsCreateDialogOpen(false)}
+                        onClick={() => {
+                          setIsCreateDialogOpen(false);
+                          setFormName("");
+                          setFormDescription("");
+                          setFormUserIds([]);
+                        }}
                         disabled={isSubmitting}
                       >
                         Cancel
@@ -411,7 +470,7 @@ export default function POSManagement() {
                 <div className="mb-4">
                   <p className="text-xs text-gray-400 mb-1">Assigned Users:</p>
                   <div className="flex flex-wrap gap-1">
-                    {station.assignedUsers.slice(0, 3).map((user: any) => (
+                    {station.assignedUsers.slice(0, 3).map((user: User) => (
                       <span
                         key={user.id}
                         className="text-xs px-2 py-1 bg-gray-700 text-gray-300 rounded"
@@ -486,6 +545,73 @@ export default function POSManagement() {
                               }
                             />
                           </div>
+                          <div>
+                            <Label>Assign Users</Label>
+                            <div className="mt-2 max-h-48 overflow-y-auto border rounded-md p-3 space-y-2">
+                              {userFetchError ? (
+                                <p className="text-sm text-red-400">
+                                  {userFetchError}
+                                </p>
+                              ) : allUsers.length === 0 ? (
+                                <p className="text-sm text-gray-400">
+                                  No users available
+                                </p>
+                              ) : (
+                                allUsers.map((user) => {
+                                  const isChecked = formUserIds.includes(
+                                    user.id.toString()
+                                  );
+                                  return (
+                                    <div
+                                      key={user.id}
+                                      className="flex items-center gap-2 cursor-pointer hover:bg-gray-700/50 p-2 rounded"
+                                      onClick={() => {
+                                        if (isChecked) {
+                                          setFormUserIds(
+                                            formUserIds.filter(
+                                              (id) => id !== user.id.toString()
+                                            )
+                                          );
+                                        } else {
+                                          setFormUserIds([
+                                            ...formUserIds,
+                                            user.id.toString(),
+                                          ]);
+                                        }
+                                      }}
+                                    >
+                                      <Checkbox
+                                        checked={isChecked}
+                                        onCheckedChange={(checked) => {
+                                          if (checked) {
+                                            setFormUserIds([
+                                              ...formUserIds,
+                                              user.id.toString(),
+                                            ]);
+                                          } else {
+                                            setFormUserIds(
+                                              formUserIds.filter(
+                                                (id) =>
+                                                  id !== user.id.toString()
+                                              )
+                                            );
+                                          }
+                                        }}
+                                      />
+                                      <span className="text-sm text-gray-200">
+                                        {user.name || user.email}
+                                      </span>
+                                      {user.role && (
+                                        <span className="text-xs text-gray-400">
+                                          ({user.role})
+                                        </span>
+                                      )}
+                                    </div>
+                                  );
+                                })
+                              )}
+                            </div>
+                          </div>
                           <div className="flex gap-2">
                             <Button
                               onClick={handleUpdateStation}
@@ -496,7 +622,12 @@ export default function POSManagement() {
                             </Button>
                             <Button
                               variant="outline"
-                              onClick={() => setEditingStation(null)}
+                              onClick={() => {
+                                setEditingStation(null);
+                                setFormName("");
+                                setFormDescription("");
+                                setFormUserIds([]);
+                              }}
                               disabled={isSubmitting}
                             >
                               Cancel
