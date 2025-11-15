@@ -96,7 +96,14 @@ export default function Dashboard() {
   }, [fetchAll]);
 
   if (loading) {
-    return <p className="p-6">Loading dashboard...</p>;
+    return (
+        <div className="min-h-screen w-full bg-background p-6 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading dashboard...</p>
+          </div>
+        </div>
+    );
   }
 
   if (!me) {
