@@ -114,4 +114,16 @@ public class ProductService {
                 base.categoryId(),
                 categoryName);
     }
+
+    @Transactional
+    public void delete(Long id) {
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Product not found: " + id));
+
+        // Mark as inactive instead of hard delete to preserve inventory history
+        product.setActive(false);
+        product.setUpdatedAt(OffsetDateTime.now());
+        productRepository.save(product);
+    }
 }

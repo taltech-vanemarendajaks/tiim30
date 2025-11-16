@@ -30,8 +30,9 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public ProductResponseDto delete(@PathVariable Long id) {
-        return productService.getById(id);
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        productService.delete(id);
     }
 
 }
