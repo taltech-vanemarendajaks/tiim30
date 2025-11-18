@@ -419,7 +419,7 @@ export default function Inventory() {
 
   if (loading) {
     return (
-      <div className="min-h-screen w-full bg-background p-6 flex items-center justify-center">
+      <div className="min-h-screen w-full bg-background p-4 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading inventory...</p>
@@ -429,8 +429,8 @@ export default function Inventory() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-6">
-        <div className="rounded-lg bg-card p-6 shadow-sm mb-6">
+    <div className="min-h-screen bg-background p-4">
+        <div className="rounded-lg bg-card p-6 shadow-sm mb-6 border-1 border-[color-mix(in oklab, var(--ring) 50%, transparent)]">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
               <Package className="w-8 h-8 text-blue-600" />

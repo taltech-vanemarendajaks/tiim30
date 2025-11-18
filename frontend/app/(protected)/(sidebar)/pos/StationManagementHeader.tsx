@@ -28,7 +28,7 @@ export function StationManagementHeader({
   onCreate,
 }: StationManagementHeaderProps) {
   return (
-    <div className="rounded-lg bg-card p-4 sm:p-6 shadow-sm mb-4 sm:mb-6">
+    <div className="rounded-lg bg-card p-4 sm:p-6 shadow-sm mb-4 sm:mb-6 border-1 border-[color-mix(in oklab, var(--ring) 50%, transparent)]">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3 flex-1 min-w-0">
           <ShoppingCart className="w-6 h-6 sm:w-8 sm:h-8 text-blue-600 flex-shrink-0" />
@@ -54,8 +54,8 @@ export function StationManagementHeader({
               onOpenChange={onCreateDialogOpenChange}
               onSubmit={onCreate}
               trigger={
-                <Button className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
-                  <Plus className="w-4 h-4 mr-2" />
+                <Button className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto text-white">
+                  <Plus className="w-4 h-4" />
                   Create Station
                 </Button>
               }

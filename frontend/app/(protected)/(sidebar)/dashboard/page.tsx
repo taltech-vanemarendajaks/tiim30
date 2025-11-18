@@ -121,7 +121,7 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen w-full bg-background p-6 flex items-center justify-center">
+      <div className="min-h-screen w-full bg-background p-4 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading dashboard...</p>
@@ -131,12 +131,12 @@ export default function Dashboard() {
   }
 
   if (!me) {
-    return <p className="p-6">Not authenticated.</p>;
+    return <p className="p-4">Not authenticated.</p>;
   }
 
   return (
-    <div className="min-h-screen bg-background p-6">
-        <div className="rounded-lg bg-card p-6 shadow">
+    <div className="min-h-screen bg-background p-4">
+        <div className="rounded-lg bg-card p-6 shadow border-1 border-[color-mix(in oklab, var(--ring) 50%, transparent)]">
           {error && (
             <div className="mb-4 rounded border border-destructive/50 bg-destructive/10 px-4 py-2 text-sm text-destructive">
               {error}

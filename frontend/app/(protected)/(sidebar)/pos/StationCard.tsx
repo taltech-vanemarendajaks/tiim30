@@ -36,7 +36,7 @@ export function StationCard({
   const router = useRouter();
 
   return (
-    <div className="bg-card p-4 sm:p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow w-full max-w-full overflow-hidden">
+    <div className="bg-card p-4 sm:p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow w-full max-w-full overflow-hidden border-1 border-[color-mix(in oklab, var(--ring) 50%, transparent)]">
       <div className="flex items-start justify-between mb-3 gap-2">
         <div className="flex-1 min-w-0">
           <h3 className="text-xl font-bold text-gray-100 mb-1 truncate">

@@ -88,7 +88,7 @@ function SidebarFooterContent() {
 
 export function AppSidebar() {
   return (
-    <Sidebar variant="floating" collapsible="icon">
+    <Sidebar variant="floating" collapsible="icon" className="p-4">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel className="text-md">Börsibaar</SidebarGroupLabel>
