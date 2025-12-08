@@ -12,10 +12,6 @@ import java.time.OffsetDateTime;
 @Getter
 @Setter
 public class Product {
-    public static final BigDecimal DEFAULT_PRICE_INCREASE = BigDecimal.valueOf(0.05); // TODO define under org
-    public static final BigDecimal DEFAULT_PRICE_DECREASE = BigDecimal.valueOf(0.05);
-    public static final BigDecimal DEFAULT_MIN_PRICE = BigDecimal.valueOf(0.05);
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -56,4 +52,8 @@ public class Product {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", insertable = false, updatable = false)
     private Category category;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "organization_id", insertable = false, updatable = false)
+    private Organization organization;
 }

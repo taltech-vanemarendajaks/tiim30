@@ -51,9 +51,10 @@ public class PriceCorrectionJob {
                         return newInv;
                     });
 
-            BigDecimal minPrice = Optional.ofNullable(product.getMinPrice()).orElse(Product.DEFAULT_MIN_PRICE);
+            BigDecimal decreaseAmount = product.getOrganization().getPriceDecreaseStep();
+            BigDecimal minPrice = Optional.ofNullable(product.getMinPrice()).orElse(decreaseAmount);
             BigDecimal currentPrice = Optional.ofNullable(inventory.getAdjustedPrice()).orElse(product.getBasePrice());
-            BigDecimal newPrice = currentPrice.subtract(Product.DEFAULT_PRICE_DECREASE);
+            BigDecimal newPrice = currentPrice.subtract(decreaseAmount);
             if (newPrice.compareTo(minPrice) < 0) {
                 newPrice = minPrice;
             }

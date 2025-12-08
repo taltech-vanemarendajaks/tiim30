@@ -103,7 +103,7 @@ public class SalesService {
                 BigDecimal priceAfterSale = priceBeforeSale;
                 Category category = product.getCategory();
                 if (category != null && category.isDynamicPricing()) {
-                        priceAfterSale = priceBeforeSale.add(Product.DEFAULT_PRICE_INCREASE);
+                        priceAfterSale = priceBeforeSale.add(product.getOrganization().getPriceIncreaseStep());
                         if (product.getMaxPrice() != null && priceAfterSale.compareTo(product.getMaxPrice()) > 0) {
                                 priceAfterSale = product.getMaxPrice();
                         }
