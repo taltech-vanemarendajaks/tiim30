@@ -64,9 +64,17 @@ public class InventoryController {
     }
 
     @GetMapping("/product/{productId}/history")
-    public List<InventoryTransactionResponseDto> getTransactionHistory(@PathVariable Long productId) {
-        User user = SecurityUtils.getCurrentUser();
-        return inventoryService.getTransactionHistory(productId, user.getOrganizationId());
+    public List<InventoryTransactionResponseDto> getTransactionHistory(
+            @PathVariable Long productId,
+            @RequestParam(required = false) Long organizationId) {
+        Long orgId;
+        if (organizationId != null) {
+            orgId = organizationId;
+        } else {
+            User user = SecurityUtils.getCurrentUser();
+            orgId = user.getOrganizationId();
+        }
+        return inventoryService.getTransactionHistory(productId, orgId);
     }
 
     @GetMapping("/sales-stats")
