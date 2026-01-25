@@ -88,7 +88,7 @@ PostgreSQL database configured via Docker. Environment variables are loaded from
 2. Use Docker for local development: `docker compose up`
 3. Start frontend by running `npm run dev` in the `frontend` directory
 
-### Sample `.env` (root)
+### Sample `.env` (root)   NB! prefer using unquoted values - can cause problems for docker
 
 ```env
 POSTGRES_DB=
