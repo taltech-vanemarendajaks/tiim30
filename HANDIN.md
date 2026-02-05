@@ -1,12 +1,13 @@
-TEAM 30 HANDIN
-PULL REQUESTS
+#TEAM 30 HANDIN
+
+##PULL REQUESTS
 https://github.com/taltech-vanemarendajaks/team30/pull/2
 https://github.com/taltech-vanemarendajaks/team30/pull/5
 
-CONFLICT
+##CONFLICT
 TBD  for example in this file 
 
-WORKED ON
+##WORKED ON
 Rain  - raintuur
 Tekitas team.md faili ja reviewis pull requeste
 
