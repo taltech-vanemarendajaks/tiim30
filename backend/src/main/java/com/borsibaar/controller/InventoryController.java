@@ -67,7 +67,7 @@ public class InventoryController {
     public List<InventoryTransactionResponseDto> getTransactionHistory(
             @PathVariable Long productId,
             @RequestParam(required = false) Long organizationId) {
-        Long orgId = 0;
+        Long orgId;
         if (organizationId != null) {
             orgId = organizationId;
         } else {
