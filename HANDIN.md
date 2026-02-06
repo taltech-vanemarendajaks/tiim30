@@ -4,6 +4,7 @@
 ## PULL REQUESTS
 
 https://github.com/taltech-vanemarendajaks/team30/pull/2
+
 https://github.com/taltech-vanemarendajaks/team30/pull/5
 
   
