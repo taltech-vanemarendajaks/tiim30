@@ -5,7 +5,7 @@ https://github.com/taltech-vanemarendajaks/team30/pull/2
 https://github.com/taltech-vanemarendajaks/team30/pull/5
 
 ##CONFLICT
-TBD  for example in this file 
+Conflict created editing this line in this file in develop and main branches
 
 ##WORKED ON
 Rain  - raintuur
