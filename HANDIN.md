@@ -11,7 +11,7 @@ https://github.com/taltech-vanemarendajaks/team30/pull/5
 
 ## CONFLICT
 
-TBD for example in this file - even in this row
+test/PossibleConflict1 modifies this row
 
   
 
