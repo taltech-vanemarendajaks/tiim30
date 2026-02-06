@@ -1,26 +1,46 @@
-#TEAM 30 HANDIN
+# TEAM 30 HANDIN
 
-##PULL REQUESTS
+  
+
+## PULL REQUESTS
+
 https://github.com/taltech-vanemarendajaks/team30/pull/2
 https://github.com/taltech-vanemarendajaks/team30/pull/5
 
-##CONFLICT
-Conflict created editing this line in this file in develop and main branches
+  
 
-##WORKED ON
-Rain  - raintuur
-Tekitas team.md faili ja reviewis pull requeste
+## CONFLICT
+
+TBD for example in this file - even in this row
+
+  
+
+## WORKED ON
+
+Rain - raintuur
+
+	Created team.md fail ja reviewed pull requeste
+
+  
 
 Märten - MPuust
-Code refactor in InventoryController, pull request
+
+	Code refactor in InventoryController
+	pull request 2
+
+  
 
 Eero - eero18
-Feature branch /docs/improve-onboarding-experience
-Adding documentation
-Merging pull request
-HANDIN.md
 
+	Feature branch /docs/improve-onboarding-experience
+	(Adding documentation for initial startup)
+	Merging pull request from GitHub
+	publishing HANDIN.md file
+  
+Sigrid - SigridPihel
 
-Sigrid  - SigridPihel
+	forked the repo to GitHub private repo
+  
+Katariina - Katariina-Parkja
 
-Katariina  - Katariina-Parkja
+	forked the repo to GitHub private repo
