@@ -1,6 +1,5 @@
 # TEAM 30 HANDIN
 
-  brach
 
 ## PULL REQUESTS
 
@@ -21,12 +20,14 @@ Conflict was resolved by manuall changing file
 
 Rain - raintuur
 
-	Created team.md fail ja reviewed pull requeste
-
+	Forked the repo
+    Created team.md file and  reviewed pull request
   
 
 Märten - MPuust
 
+    Forked the repo to GitHub private repo
+    Assigned team members
 	Code refactor in InventoryController
 	pull request 2
 
@@ -34,15 +35,17 @@ Märten - MPuust
 
 Eero - eero18
 
-	Feature branch /docs/improve-onboarding-experience
-	(Adding documentation for initial startup)
-	Merging pull request from GitHub
+    Forked the rrepo to GitHub private repo
+	Feature branch /docs/improve-onboarding-experience (Adding documentation for initial startup)
+	Merging pull request2 from GitHub using Merge option
+    Merging pull request5 using rebase option
 	publishing HANDIN.md file
+    Creating conflict in this file using 2 branches
   
 Sigrid - SigridPihel
 
-	forked the repo to GitHub private repo
+	Forked the repo to GitHub private repo
   
 Katariina - Katariina-Parkja
 
-	forked the repo to GitHub private repo
+	Forked the repo to GitHub private repo
