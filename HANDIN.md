@@ -34,7 +34,7 @@ Märten - MPuust
 
   
 
-Eero - eero18
+Eero - EeroNoormets
 
     Forked the rrepo to GitHub private repo
 	Feature branch /docs/improve-onboarding-experience (Adding documentation for initial startup)

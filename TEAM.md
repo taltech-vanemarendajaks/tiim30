@@ -1,6 +1,6 @@
 # team xxx
 
-- **Eero Noormets** > _eero18_
+- **Eero Noormets** > _EeroNoormets_
 - **Katariina Parkja** > _Katariina-Parkja_
 - **Rain Tüür** > _raintuur_
 - **Sigrid Pihel** > _SigridPihel_
