@@ -11,7 +11,7 @@ https://github.com/taltech-vanemarendajaks/team30/pull/5
 
 ## CONFLICT
 
-TBD for example in this file - even in this row
+Modifiying this line in brach test/PossibleConflict2 to have conflict
 
   
 
